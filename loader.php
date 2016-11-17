@@ -29,13 +29,6 @@
  */
 
 
-
-
-
-
-
-
-
 class BuddyForms_Custom_Post_Types {
 
 	public function __construct() {

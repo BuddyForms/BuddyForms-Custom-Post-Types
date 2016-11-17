@@ -11,30 +11,35 @@ add_action( 'buddyforms_form_setup_nav_li_last', 'buddyforms_form_setup_nav_li_c
 
 function buddyforms_form_setup_tab_pane_cpt() {
 	global $post, $buddyform; ?>
+
+
+	<h4><?php _e('Custom Post Type'); ?></h4>
+
+	<p>
+		You can create a post type from this form.
+	</p>
+
+	<?php
+
+	$form_setup = array();
+
+	if ( ! $buddyform ) {
+		$buddyform = get_post_meta( get_the_ID(), '_buddyforms_options', true );
+	}
+
+	$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Create new Post Type from this Form', 'buddyforms' ) . '</b>', "buddyforms_options[create_post_type]", array( 'create_post_type' => __( 'Create Post Type', 'buddyforms' ) ), array(
+		'value'     => isset( $buddyform['create_post_type'] ) ? $buddyform['create_post_type'] : '',
+		'shortDesc' => '(CPTUI default: true) Whether or not posts of this type should be shown in the admin UI and is publicly queryable.',
+		'id'        => 'create_post_type',
+	) );
+
+	buddyforms_display_field_group_table( $form_setup );
+
+	?>
+
 	<div class="tab-pane fade in" id="cpt">
 	<div class="buddyforms_accordion_cpt">
-		<h4><?php _e('Custom Post Type'); ?></h4>
 
-		<p>
-			You can create a post type from this form.
-		</p>
-
-		<?php
-
-		$form_setup = array();
-
-		if ( ! $buddyform ) {
-			$buddyform = get_post_meta( get_the_ID(), '_buddyforms_options', true );
-		}
-
-		$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Create new Post Type from this Form', 'buddyforms' ) . '</b>', "buddyforms_options[create_post_type]", array( 'create_post_type' => __( 'Create Post Type', 'buddyforms' ) ), array(
-			'value'     => isset( $buddyform['create_post_type'] ) ? $buddyform['create_post_type'] : '',
-			'shortDesc' => '(CPTUI default: true) Whether or not posts of this type should be shown in the admin UI and is publicly queryable.'
-		) );
-
-		buddyforms_display_field_group_table( $form_setup );
-
-		?>
 
 		<ul>
 
@@ -245,7 +250,6 @@ function buddyforms_form_setup_tab_pane_cpt() {
 add_action( 'buddyforms_form_setup_tab_pane_last', 'buddyforms_form_setup_tab_pane_cpt' );
 
 
-
 function buddyforms_formbuilder_settings( $trigger, $link_label, $form_setup ){
 	?>
 	<li id="trigger<?php echo $trigger ?>" class="bf_trigger_list_item <?php echo $trigger ?> ui-sortable-handle">
@@ -299,7 +303,7 @@ function buddyforms_cpt_admin_js_footer(){
 			from_setup_post_type_custom();
 
 			// On Change listener for the post type. If the post type is custom show the custom post type nav
-			jQuery(document.body).on('change', '#form_post_type', function () {
+			jQuery(document.body).on('change', '#create_post_type-0', function () {
 				from_setup_post_type_custom();
 			});
 
@@ -307,11 +311,13 @@ function buddyforms_cpt_admin_js_footer(){
 
 		// function to show hide the custom post type nav
 		function from_setup_post_type_custom() {
-			var post_type = jQuery('#form_post_type').val();
-			if(post_type == 'custom'){
-				jQuery('.cpt-nav').show();
+			var create_post_type = jQuery('#create_post_type-0').val();
+
+
+			if(jQuery('#create_post_type-0').is(":checked")){
+				jQuery('.buddyforms_accordion_cpt').show();
 			} else {
-				jQuery('.cpt-nav').hide();
+				jQuery('.buddyforms_accordion_cpt').hide();
 			}
 		}
 
