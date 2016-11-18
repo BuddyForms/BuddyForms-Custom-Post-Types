@@ -29,7 +29,7 @@ function buddyforms_form_setup_tab_pane_cpt() {
 
 	$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Create new Post Type from this Form', 'buddyforms' ) . '</b>', "buddyforms_options[create_post_type]", array( 'create_post_type' => __( 'Create Post Type', 'buddyforms' ) ), array(
 		'value'     => isset( $buddyform['create_post_type'] ) ? $buddyform['create_post_type'] : '',
-		'shortDesc' => '(CPTUI default: true) Whether or not posts of this type should be shown in the admin UI and is publicly queryable.',
+		'shortDesc' => 'We will set up the new post type with teh most commen setting. You should take your time and adjust the settings to your needs. You can find help on how to create post types in the Documentation',
 		'id'        => 'create_post_type',
 	) );
 
@@ -53,20 +53,15 @@ function buddyforms_form_setup_tab_pane_cpt() {
 				$buddyform = get_post_meta( get_the_ID(), '_buddyforms_options', true );
 			}
 
-			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Create new Post Type from this Form', 'buddyforms' ) . '</b>', "buddyforms_options[create_post_type]", array( 'create_post_type' => __( 'Create Post Type', 'buddyforms' ) ), array(
-				'value'     => isset( $buddyform['create_post_type'] ) ? $buddyform['create_post_type'] : '',
-				'shortDesc' => '(CPTUI default: true) Whether or not posts of this type should be shown in the admin UI and is publicly queryable.'
-			) );
-
-			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Public', 'buddyforms' ) . '</b>', "buddyforms_options[public]", array( 'public' => __( 'public', 'buddyforms' ) ), array(
+			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Public', 'buddyforms' ) . '</b>', "buddyforms_options[public]", array( 'disable' => __( 'Disable', 'buddyforms' ) ), array(
 				'value'     => isset( $buddyform['public'] ) ? $buddyform['public'] : '',
 				'shortDesc' => '(CPTUI default: true) Whether or not posts of this type should be shown in the admin UI and is publicly queryable.'
 			) );
-			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Publicly Queryable', 'buddyforms' ) . '</b>', "buddyforms_options[publicly_queryable]", array( 'publicly_queryable' => __( 'publicly_queryable', 'buddyforms' ) ), array(
+			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Publicly Queryable', 'buddyforms' ) . '</b>', "buddyforms_options[publicly_queryable]", array( 'disable' => __( 'Disable', 'buddyforms' ) ), array(
 				'value'     => isset( $buddyform['publicly_queryable'] ) ? true : false,
 				'shortDesc' => '(default: true) Whether or not queries can be performed on the front end as part of parse_request()'
 			) );
-			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Show UI', 'buddyforms' ) . '</b>', "buddyforms_options[show_ui]", array( 'show_ui' => __( 'show_ui', 'buddyforms' ) ), array(
+			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Show UI', 'buddyforms' ) . '</b>', "buddyforms_options[show_ui]", array( 'disable' => __( 'Disable', 'buddyforms' ) ), array(
 				'value'     => isset( $buddyform['show_ui'] ) ? true : false,
 				'shortDesc' => '(default: true) Whether or not to generate a default UI for managing this post type.'
 			) );
@@ -82,7 +77,7 @@ function buddyforms_form_setup_tab_pane_cpt() {
 				'value'     => isset( $buddyform['has_archive'] ) ? true : false,
 				'shortDesc' => 'If left blank, the archive slug will default to the post type slug.(default: false) Whether or not the post type will have a post type archive URL.'
 			) );
-			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Show in Nav Menus', 'buddyforms' ) . '</b>', "buddyforms_options[show_in_menu]", array( 'publicly_queryable' => __( 'show_in_menu', 'buddyforms' ) ), array(
+			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'Show in Nav Menus', 'buddyforms' ) . '</b>', "buddyforms_options[show_in_menu]", array( 'disable' => __( 'Disable', 'buddyforms' ) ), array(
 				'value'     => isset( $buddyform['show_in_menu'] ) ? true : false,
 				'shortDesc' => '(CPTUI default: true) Whether or not this post type is available for selection in navigation menus.'
 			) );
@@ -110,7 +105,7 @@ function buddyforms_form_setup_tab_pane_cpt() {
 				'value'     => isset( $buddyform['rewrite_slug'] ) ? true : false,
 				'shortDesc' => 'Custom post type slug to use instead of the default.'
 			) );
-			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'With Front', 'buddyforms' ) . '</b>', "buddyforms_options[rewrite_withfront]", array( 'rewrite_withfront' => __( 'rewrite_withfront', 'buddyforms' ) ), array(
+			$form_setup[]  = new Element_Checkbox( '<b>' . __( 'With Front', 'buddyforms' ) . '</b>', "buddyforms_options[rewrite_withfront]", array( 'disable' => __( 'Disable', 'buddyforms' ) ), array(
 				'value'     => isset( $buddyform['rewrite_withfront'] ) ? true : false,
 				'shortDesc' => '(default: true) Should the permastruct be prepended with the front base.'
 			) );
@@ -146,7 +141,7 @@ function buddyforms_form_setup_tab_pane_cpt() {
 			) );
 
 
-			buddyforms_formbuilder_settings( 'cpt_setup', 'Setup', $form_setup );
+			buddyforms_formbuilder_settings( 'cpt_setup', 'Post Type Setup', $form_setup );
 
 
 			$form_setup = array();
@@ -240,7 +235,12 @@ function buddyforms_form_setup_tab_pane_cpt() {
 			) );
 			buddyforms_formbuilder_settings( 'cpt_label', 'Labels', $form_setup );
 
-
+//			$form_setup = array();
+//			$form_setup[]  = new Element_Textbox( '<b>' . __( 'Menu Name', 'buddyforms' ) . '</b>', "buddyforms_options[labels][menu_name]", array(
+//				'value'     => isset( $buddyform['labels']['menu_name'] ) ? $buddyform['labels']['menu_name'] : '',
+//				'shortDesc' => 'Custom admin menu name for your custom post type.'
+//			) );
+//			buddyforms_formbuilder_settings( 'cpt_taxonomy', 'Post Type Taxonomies', $form_setup );
 			?>
 		</ul>
 	</div>
