@@ -3,6 +3,11 @@
 function buddyforms_create_post_types(){
 	global $buddyforms;
 
+
+	if(!isset($buddyforms)){
+		return;
+	}
+
 	foreach ( $buddyforms as $form_slug => $buddyform ){
 
 		if( isset( $buddyform['create_post_type'] ) ){
