@@ -22,7 +22,7 @@ function buddyforms_form_setup_tab_pane_cpt() {
 	<?php
 
 	if( isset( $buddyform['create_post_type'] ) ){
-		echo 'jo';
+//		echo 'jo';
 	}
 
 	$form_setup = array();
